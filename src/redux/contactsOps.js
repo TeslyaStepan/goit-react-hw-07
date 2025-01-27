@@ -14,3 +14,29 @@ export const fetchContacts = createAsyncThunk(
     }
   }
 );
+
+export const addContact = createAsyncThunk(
+  "contacts/addContact",
+  async (body, thunkAPI) => {
+    try {
+      const { data } = await axios.post("/contacts", body);
+      thunkAPI.dispatch(fetchContacts());
+      return data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
+export const deleteContact = createAsyncThunk(
+  "contacts/deleteContact",
+  async (id, thunkAPI) => {
+    try {
+      const { data } = await axios.delete(`/contacts/${id}`);
+      thunkAPI.dispatch(fetchContacts());
+      return data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
